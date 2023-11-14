@@ -6,20 +6,21 @@ import "./playSongModal.css";
 const PlaySongModal = ({ showModal, onClose, id, title }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [songUrl, setSongUrl] = useState();
+
   useEffect(() => {
     if (id) {
-      debugger;
-      setIsLoading(true);
-      getSong(id).then(
-        (result) => {
-          debugger;
+      const getSongUrl = async () => {
+        try {
+          let result = await getSong(id);
           setSongUrl(result.formats[0].url);
-        },
-        (error) => {
+        } catch (error) {
           // TODO: implement error handler
           console.error(error);
         }
-      );
+      };
+      setIsLoading(true);
+      getSongUrl();
+      setIsLoading(false);
     }
   }, [id]);
 
@@ -27,6 +28,7 @@ const PlaySongModal = ({ showModal, onClose, id, title }) => {
     setSongUrl(null);
     onClose();
   };
+
   return (
     <ModalWindow showModal={showModal} title={title} onClose={handleClose}>
       <iframe

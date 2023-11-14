@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllSongs, getAllNews } from "@serengeti/api";
+import { getAllSongs } from "@serengeti/api";
 import { MusicList } from "./components/MusicList/MusicList";
 
 export const MusicLayout = () => {
@@ -7,21 +7,18 @@ export const MusicLayout = () => {
   const [list, setList] = useState();
 
   useEffect(() => {
+    const getList = async () => {
+      try {
+        let result = await getAllSongs();
+        setList(result.data);
+      } catch (error) {
+        // TODO: implement gloabal error handler
+        console.error(error);
+      }
+    };
     setIsLoading(true);
-    getAllSongs()
-      .then(
-        (result) => {
-          setList(result.data);
-        },
-        (error) => {
-          // TODO: implement gloabal error handler
-          console.error(error);
-        }
-      )
-      .finally(setIsLoading(false));
-    getAllNews().then((res) => {
-      console.log(res);
-    });
+    getList();
+    setIsLoading(false);
   }, []);
 
   if (isLoading) {

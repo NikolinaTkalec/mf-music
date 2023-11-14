@@ -8,7 +8,6 @@ export const MusicList = ({ list = [] }) => {
   const [title, setTitle] = useState();
 
   const handleClick = (id, title) => {
-    debugger;
     setSongId(id);
     setTitle(title);
     setShowModal(!showModal);
